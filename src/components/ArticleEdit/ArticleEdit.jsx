@@ -7,14 +7,20 @@ import useArticleDelete from '../../hooks/useArticleDelete';
 
 export const ArticleEdit = ({ article, isFavorite, onToggleFavorite, refreshArticles }) => {
   const [open, setOpen] = useState(false);
-  const { deleteArticle } = useArticleDelete();
+  const { handleDelete } = useArticleDelete();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleRemove = async () => {
-    await deleteArticle(article.id);
-    if (refreshArticles) refreshArticles();
+    try {
+      const success = await handleDelete(article.id);
+      if (success && refreshArticles) {
+        refreshArticles();
+      }
+    } catch (error) {
+      console.error('Error removing article:', error);
+    }
   };
 
   return (
@@ -50,6 +56,7 @@ export const ArticleEdit = ({ article, isFavorite, onToggleFavorite, refreshArti
         onClose={handleClose}
         isEditing={true}
         article={article}
+        refreshArticles={refreshArticles}
       />
     </Box>
   );
