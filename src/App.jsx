@@ -1,24 +1,23 @@
-import { useState } from 'react';
 import { Container, Box, Typography, Button } from '@mui/material';
-import { SearchBar } from './components/SearchBar/SearchBar';
 import { ArticlesList } from './components/ArticlesList/ArticlesList';
 import { ArticleModal } from './components/ArticleModal/ArticleModal';
-import { SortButton } from './components/SortButton/SortButton';
 import useLocalStorage from './hooks/useLocalStorage';
-import useArticles from './hooks/useArticles';
 import useArticleEdit from './hooks/useArticleEdit';
 import useArticleCreate from './hooks/useArticleCreate';
-import useSearchQuery from './hooks/useSearchQuery';
+import { SortButton } from './components/SortButton/SortButton.jsx';
+import useArticleList from './hooks/useArticleList.jsx';
 
 const App = () => {
-  const [searchQuery, setSearchQuery] = useSearchQuery();
-  const [isSorted, setIsSorted] = useState(false);
   const [favoriteArticles, setFavoriteArticles] = useLocalStorage(
     'favoriteArticles',
     [],
   );
 
-  const { articles, refreshArticles } = useArticles(isSorted, searchQuery);
+  const {
+    isSorted,
+    handleToggleSort,
+  } = useArticleList();
+
   const {
     open: editOpen,
     editingArticle,
@@ -38,10 +37,6 @@ const App = () => {
       }
       return [...previous, articleId];
     });
-  };
-
-  const handleToggleSort = () => {
-    setIsSorted((previousArticle) => !previousArticle);
   };
 
   const isModalOpen = editOpen || createOpen;
@@ -79,16 +74,12 @@ const App = () => {
             onClose={handleModalClose}
             isEditing={isEditing}
             article={currentArticle}
-            refreshArticles={refreshArticles}
           />
         </Box>
-        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <ArticlesList
-          articles={articles}
           favoriteArticles={favoriteArticles}
           onToggleFavorite={handleToggleFavorite}
           onEdit={handleEditOpen}
-          refreshArticles={refreshArticles}
         />
       </Box>
     </Container>
