@@ -1,14 +1,12 @@
 import { useState, useMemo } from 'react';
 import { useGetArticlesQuery } from '../store/api';
+import { useSelector } from 'react-redux';
+import { selectIsSorted } from '../store/sortSlice.jsx';
 
 const useArticleList = () => {
-  const [isSorted, setIsSorted] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { data: articles = [], refetch } = useGetArticlesQuery();
-
-  const handleToggleSort = () => {
-    setIsSorted(prev => !prev);
-  };
+  const isSorted = useSelector(selectIsSorted);
 
   const handleSearchChange = (query) => {
     setSearchQuery(query);
@@ -26,7 +24,6 @@ const useArticleList = () => {
       );
     }
 
-    // Apply sorting
     if (isSorted) {
       result.sort((a, b) => a.content.length - b.content.length);
     }
@@ -38,7 +35,6 @@ const useArticleList = () => {
     articles: filteredAndSortedArticles,
     isSorted,
     searchQuery,
-    handleToggleSort,
     handleSearchChange,
     refreshArticles: refetch
   };

@@ -2,8 +2,7 @@ import { Container, Box, Typography, Button } from '@mui/material';
 import { ArticlesList } from './components/ArticlesList/ArticlesList';
 import { ArticleModal } from './components/ArticleModal/ArticleModal';
 import useLocalStorage from './hooks/useLocalStorage';
-import { SortButton } from './components/SortButton/SortButton.jsx';
-import useArticleList from './hooks/useArticleList.jsx';
+import SortButton from './components/SortButton/SortButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { openModal, closeModal } from './store/modalSlice';
 
@@ -15,11 +14,6 @@ const App = () => {
     'favoriteArticles',
     [],
   );
-
-  const {
-    isSorted,
-    handleToggleSort,
-  } = useArticleList();
 
   const handleToggleFavorite = (articleId) => {
     setFavoriteArticles((previous) => {
@@ -56,7 +50,7 @@ const App = () => {
             >
               Add new article
             </Button>
-            <SortButton isSorted={isSorted} onToggleSort={handleToggleSort} />
+            <SortButton />
           </Box>
           <ArticleModal
             open={isModalOpen}
