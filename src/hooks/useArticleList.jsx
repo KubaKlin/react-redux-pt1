@@ -33,7 +33,6 @@ const useArticleList = () => {
 
   return {
     articles: filteredAndSortedArticles,
-    isSorted,
     searchQuery,
     handleSearchChange,
     refreshArticles: refetch
