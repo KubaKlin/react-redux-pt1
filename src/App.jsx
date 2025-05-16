@@ -40,10 +40,6 @@ const App = () => {
     dispatch(openModal('create'));
   };
 
-  const handleEditClick = () => {
-    dispatch(openModal('edit'));
-  };
-
   return (
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
@@ -71,7 +67,6 @@ const App = () => {
         <ArticlesList
           favoriteArticles={favoriteArticles}
           onToggleFavorite={handleToggleFavorite}
-          onEdit={handleEditClick}
         />
       </Box>
     </Container>

@@ -1,16 +1,22 @@
 import { Button, Box, IconButton } from '@mui/material';
-import { useState } from 'react';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { ArticleModal } from '../ArticleModal/ArticleModal';
 import useArticleDelete from '../../hooks/useArticleDelete';
+import { useDispatch, useSelector } from 'react-redux';
+import { openModal, closeModal } from '../../store/modalSlice';
 
 export const ArticleEdit = ({ article, isFavorite, onToggleFavorite, refreshArticles }) => {
-  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { isOpen, modalType, articleData } = useSelector((state) => state.modal);
   const { handleDelete } = useArticleDelete();
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleEditClick = () => {
+    dispatch(openModal({ type: 'edit', article }));
+  };
+  const handleModalClose = () => {
+    dispatch(closeModal());
+  };
 
   const handleRemove = async () => {
     try {
@@ -28,7 +34,7 @@ export const ArticleEdit = ({ article, isFavorite, onToggleFavorite, refreshArti
       <Button
         variant="contained"
         color="primary"
-        onClick={handleOpen}
+        onClick={handleEditClick}
         aria-label="Edit article"
         size="small"
       >
@@ -52,10 +58,10 @@ export const ArticleEdit = ({ article, isFavorite, onToggleFavorite, refreshArti
         {isFavorite ? <StarIcon /> : <StarBorderIcon />}
       </IconButton>
       <ArticleModal
-        open={open}
-        onClose={handleClose}
+        open={isOpen && modalType === 'edit'}
+        onClose={handleModalClose}
         isEditing={true}
-        article={article}
+        article={articleData}
         refreshArticles={refreshArticles}
       />
     </Box>
