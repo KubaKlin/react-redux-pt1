@@ -1,16 +1,13 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useGetArticlesQuery } from '../store/api';
 import { useSelector } from 'react-redux';
-import { selectIsSorted } from '../store/sortSlice.jsx';
+import { selectIsSorted } from '../store/sortSlice';
+import { selectSearchQuery } from '../store/searchSlice';
 
 const useArticleList = () => {
-  const [searchQuery, setSearchQuery] = useState('');
   const { data: articles = [], refetch } = useGetArticlesQuery();
   const isSorted = useSelector(selectIsSorted);
-
-  const handleSearchChange = (query) => {
-    setSearchQuery(query);
-  };
+  const searchQuery = useSelector(selectSearchQuery);
 
   const filteredAndSortedArticles = useMemo(() => {
     let result = [...articles];
@@ -33,8 +30,6 @@ const useArticleList = () => {
 
   return {
     articles: filteredAndSortedArticles,
-    searchQuery,
-    handleSearchChange,
     refreshArticles: refetch
   };
 };

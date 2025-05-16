@@ -4,16 +4,11 @@ import { SearchBar } from '../SearchBar/SearchBar';
 import useArticleList from '../../hooks/useArticleList';
 
 export const ArticlesList = ({ favoriteArticles, onToggleFavorite }) => {
-  const {
-    articles,
-    searchQuery,
-    handleSearchChange,
-    refreshArticles
-  } = useArticleList();
+  const { articles, refreshArticles } = useArticleList();
 
   return (
     <>
-      <SearchBar searchQuery={searchQuery} setSearchQuery={handleSearchChange} />
+      <SearchBar />
       <List sx={{ background: '#efefef' }}>
         {articles.map((article) => (
           <ListItem key={article.id} sx={{ display: 'block' }}>

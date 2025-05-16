@@ -1,8 +1,13 @@
 import { TextField, Box } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearchQuery, selectSearchQuery } from '../../store/searchSlice';
 
-export const SearchBar = ({ searchQuery, setSearchQuery }) => {
+export const SearchBar = () => {
+  const dispatch = useDispatch();
+  const searchQuery = useSelector(selectSearchQuery);
+
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
+    dispatch(setSearchQuery(event.target.value));
   };
 
   return (
