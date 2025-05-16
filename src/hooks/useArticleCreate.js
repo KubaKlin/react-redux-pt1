@@ -1,16 +1,4 @@
-import { useDispatch } from 'react-redux';
-import { openModal, closeModal } from '../store/modalSlice';
-
 const useArticleCreate = () => {
-  const dispatch = useDispatch();
-
-  const handleOpen = () => {
-    dispatch(openModal('create'));
-  };
-
-  const handleClose = () => {
-    dispatch(closeModal());
-  };
 
   const handleCreate = async (newArticle) => {
     try {
@@ -34,8 +22,6 @@ const useArticleCreate = () => {
   };
 
   return {
-    handleOpen,
-    handleClose,
     handleCreate,
   };
 };

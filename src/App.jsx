@@ -2,8 +2,6 @@ import { Container, Box, Typography, Button } from '@mui/material';
 import { ArticlesList } from './components/ArticlesList/ArticlesList';
 import { ArticleModal } from './components/ArticleModal/ArticleModal';
 import useLocalStorage from './hooks/useLocalStorage';
-import useArticleEdit from './hooks/useArticleEdit';
-import useArticleCreate from './hooks/useArticleCreate';
 import { SortButton } from './components/SortButton/SortButton.jsx';
 import useArticleList from './hooks/useArticleList.jsx';
 import { useSelector, useDispatch } from 'react-redux';
@@ -23,16 +21,6 @@ const App = () => {
     handleToggleSort,
   } = useArticleList();
 
-  const {
-    editingArticle,
-    handleOpen: handleEditOpen,
-    handleClose: handleEditClose,
-  } = useArticleEdit();
-  const {
-    handleOpen: handleCreateOpen,
-    handleClose: handleCreateClose,
-  } = useArticleCreate();
-
   const handleToggleFavorite = (articleId) => {
     setFavoriteArticles((previous) => {
       if (previous.includes(articleId)) {
@@ -42,26 +30,18 @@ const App = () => {
     });
   };
 
-  const currentArticle = editingArticle;
   const isEditing = modalType === 'edit';
 
   const handleModalClose = () => {
     dispatch(closeModal());
-    if (isEditing) {
-      handleEditClose();
-    } else {
-      handleCreateClose();
-    }
   };
 
   const handleCreateClick = () => {
     dispatch(openModal('create'));
-    handleCreateOpen();
   };
 
-  const handleEditClick = (article) => {
+  const handleEditClick = () => {
     dispatch(openModal('edit'));
-    handleEditOpen(article);
   };
 
   return (
@@ -86,7 +66,6 @@ const App = () => {
             open={isModalOpen}
             onClose={handleModalClose}
             isEditing={isEditing}
-            article={currentArticle}
           />
         </Box>
         <ArticlesList
