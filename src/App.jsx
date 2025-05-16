@@ -6,8 +6,13 @@ import useArticleEdit from './hooks/useArticleEdit';
 import useArticleCreate from './hooks/useArticleCreate';
 import { SortButton } from './components/SortButton/SortButton.jsx';
 import useArticleList from './hooks/useArticleList.jsx';
+import { useSelector, useDispatch } from 'react-redux';
+import { openModal, closeModal } from './store/modalSlice';
 
 const App = () => {
+  const dispatch = useDispatch();
+  const { isOpen: isModalOpen, modalType } = useSelector((state) => state.modal);
+  
   const [favoriteArticles, setFavoriteArticles] = useLocalStorage(
     'favoriteArticles',
     [],
@@ -19,13 +24,11 @@ const App = () => {
   } = useArticleList();
 
   const {
-    open: editOpen,
     editingArticle,
     handleOpen: handleEditOpen,
     handleClose: handleEditClose,
   } = useArticleEdit();
   const {
-    open: createOpen,
     handleOpen: handleCreateOpen,
     handleClose: handleCreateClose,
   } = useArticleCreate();
@@ -39,16 +42,26 @@ const App = () => {
     });
   };
 
-  const isModalOpen = editOpen || createOpen;
   const currentArticle = editingArticle;
-  const isEditing = !!currentArticle;
+  const isEditing = modalType === 'edit';
 
   const handleModalClose = () => {
+    dispatch(closeModal());
     if (isEditing) {
       handleEditClose();
     } else {
       handleCreateClose();
     }
+  };
+
+  const handleCreateClick = () => {
+    dispatch(openModal('create'));
+    handleCreateOpen();
+  };
+
+  const handleEditClick = (article) => {
+    dispatch(openModal('edit'));
+    handleEditOpen(article);
   };
 
   return (
@@ -63,7 +76,7 @@ const App = () => {
               size="small"
               variant="outlined"
               sx={{ mb: 2 }}
-              onClick={handleCreateOpen}
+              onClick={handleCreateClick}
             >
               Add new article
             </Button>
@@ -79,7 +92,7 @@ const App = () => {
         <ArticlesList
           favoriteArticles={favoriteArticles}
           onToggleFavorite={handleToggleFavorite}
-          onEdit={handleEditOpen}
+          onEdit={handleEditClick}
         />
       </Box>
     </Container>
