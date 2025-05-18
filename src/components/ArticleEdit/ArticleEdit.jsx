@@ -5,11 +5,18 @@ import { ArticleModal } from '../ArticleModal/ArticleModal';
 import useArticleDelete from '../../hooks/useArticleDelete';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal, closeModal } from '../../store/modalSlice';
+import { toggleFavorite } from '../../store/favoritesSlice';
 
-export const ArticleEdit = ({ article, isFavorite, onToggleFavorite, refreshArticles }) => {
+export const ArticleEdit = ({ article, refreshArticles }) => {
   const dispatch = useDispatch();
   const { isOpen, modalType, articleData } = useSelector((state) => state.modal);
   const { handleDelete } = useArticleDelete();
+  const favoriteArticles = useSelector((state) => state.favorites.favoriteArticles);
+  const isFavorite = favoriteArticles.includes(article.id)
+
+  const handleToggleFavorite = () => {
+    dispatch(toggleFavorite(article.id));
+  };
 
   const handleEditClick = () => {
     dispatch(openModal({ type: 'edit', article }));
@@ -50,8 +57,7 @@ export const ArticleEdit = ({ article, isFavorite, onToggleFavorite, refreshArti
         Remove
       </Button>
       <IconButton
-        onClick={onToggleFavorite}
-        aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+        onClick={handleToggleFavorite}
         color={isFavorite ? 'primary' : 'default'}
         size="small"
       >

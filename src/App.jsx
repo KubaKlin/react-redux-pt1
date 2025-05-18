@@ -1,34 +1,15 @@
 import { Container, Box, Typography, Button } from '@mui/material';
 import { ArticlesList } from './components/ArticlesList/ArticlesList';
 import { ArticleModal } from './components/ArticleModal/ArticleModal';
-import useLocalStorage from './hooks/useLocalStorage';
 import SortButton from './components/SortButton/SortButton';
 import { useSelector, useDispatch } from 'react-redux';
-import { openModal, closeModal } from './store/modalSlice';
+import { openModal } from './store/modalSlice';
 
 const App = () => {
   const dispatch = useDispatch();
   const { isOpen: isModalOpen, modalType } = useSelector((state) => state.modal);
-  
-  const [favoriteArticles, setFavoriteArticles] = useLocalStorage(
-    'favoriteArticles',
-    [],
-  );
-
-  const handleToggleFavorite = (articleId) => {
-    setFavoriteArticles((previous) => {
-      if (previous.includes(articleId)) {
-        return previous.filter((id) => id !== articleId);
-      }
-      return [...previous, articleId];
-    });
-  };
 
   const isEditing = modalType === 'edit';
-
-  const handleModalClose = () => {
-    dispatch(closeModal());
-  };
 
   const handleCreateClick = () => {
     dispatch(openModal('create'));
@@ -54,14 +35,10 @@ const App = () => {
           </Box>
           <ArticleModal
             open={isModalOpen}
-            onClose={handleModalClose}
             isEditing={isEditing}
           />
         </Box>
-        <ArticlesList
-          favoriteArticles={favoriteArticles}
-          onToggleFavorite={handleToggleFavorite}
-        />
+        <ArticlesList />
       </Box>
     </Container>
   );

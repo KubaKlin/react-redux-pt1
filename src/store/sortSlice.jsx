@@ -11,13 +11,10 @@ export const sortSlice = createSlice({
     toggleSort: (state) => {
       state.isSorted = !state.isSorted;
     },
-    setSort: (state, action) => {
-      state.isSorted = action.payload;
-    },
   },
 });
 
-export const { toggleSort, setSort } = sortSlice.actions;
+export const { toggleSort } = sortSlice.actions;
 
 export const selectIsSorted = (state) => state.sort.isSorted;
 

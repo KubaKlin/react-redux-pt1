@@ -2,6 +2,8 @@ import { Box, Modal, Typography } from '@mui/material';
 import { ArticleForm } from '../ArticleForm/ArticleForm';
 import useArticleCreate from '../../hooks/useArticleCreate';
 import useArticleEdit from '../../hooks/useArticleEdit';
+import { closeModal } from '../../store/modalSlice';
+import { useDispatch } from 'react-redux';
 
 const style = {
   position: 'absolute',
@@ -15,9 +17,14 @@ const style = {
   p: 4,
 };
 
-export const ArticleModal = ({ open, onClose, isEditing, article, refreshArticles }) => {
+export const ArticleModal = ({ open, isEditing, article, refreshArticles }) => {
+  const dispatch = useDispatch();
   const { handleCreate } = useArticleCreate();
   const { handleEdit } = useArticleEdit();
+
+  const handleModalClose = () => {
+    dispatch(closeModal());
+  };
 
   const handleSubmit = async (articleData) => {
     let success;
@@ -33,7 +40,7 @@ export const ArticleModal = ({ open, onClose, isEditing, article, refreshArticle
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={handleModalClose}
       aria-labelledby="article-modal-title"
       aria-describedby="article-modal-description"
     >
@@ -49,7 +56,6 @@ export const ArticleModal = ({ open, onClose, isEditing, article, refreshArticle
         <ArticleForm
           article={article}
           isEditing={isEditing}
-          onClose={onClose}
           onSubmit={handleSubmit}
         />
       </Box>

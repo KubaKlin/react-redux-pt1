@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectIsSorted, toggleSort } from '../../store/sortSlice.jsx';
+import { selectIsSorted, toggleSort } from '../../store/sortSlice';
 
 const SortButton = () => {
   const dispatch = useDispatch();

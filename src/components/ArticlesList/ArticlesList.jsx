@@ -3,7 +3,7 @@ import { ArticleEdit } from '../ArticleEdit/ArticleEdit';
 import { SearchBar } from '../SearchBar/SearchBar';
 import useArticleList from '../../hooks/useArticleList';
 
-export const ArticlesList = ({ favoriteArticles, onToggleFavorite }) => {
+export const ArticlesList = () => {
   const { articles, refreshArticles } = useArticleList();
 
   return (
@@ -28,8 +28,6 @@ export const ArticlesList = ({ favoriteArticles, onToggleFavorite }) => {
               </Typography>
               <ArticleEdit
                 article={article}
-                isFavorite={favoriteArticles.includes(article.id)}
-                onToggleFavorite={() => onToggleFavorite(article.id)}
                 refreshArticles={refreshArticles}
               />
             </Box>
