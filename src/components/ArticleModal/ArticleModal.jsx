@@ -1,6 +1,6 @@
 import { Box, Modal, Typography } from '@mui/material';
 import { ArticleForm } from '../ArticleForm/ArticleForm';
-import useArticleCreate from '../../hooks/useArticleCreate';
+import handleCreate from './handleCreate';
 import useArticleEdit from '../../hooks/useArticleEdit';
 import { closeModal } from '../../store/modalSlice';
 import { useDispatch } from 'react-redux';
@@ -19,7 +19,6 @@ const style = {
 
 export const ArticleModal = ({ open, isEditing, article, refreshArticles }) => {
   const dispatch = useDispatch();
-  const { handleCreate } = useArticleCreate();
   const { handleEdit } = useArticleEdit();
 
   const handleModalClose = () => {
