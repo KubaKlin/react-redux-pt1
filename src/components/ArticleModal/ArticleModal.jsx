@@ -1,9 +1,9 @@
 import { Box, Modal, Typography } from '@mui/material';
 import { ArticleForm } from '../ArticleForm/ArticleForm';
-import handleCreate from './handleCreate';
 import useArticleEdit from '../../hooks/useArticleEdit';
 import { closeModal } from '../../store/modalSlice';
 import { useDispatch } from 'react-redux';
+import { useCreateArticleMutation } from '../../store/api';
 
 const style = {
   position: 'absolute',
@@ -20,6 +20,7 @@ const style = {
 export const ArticleModal = ({ open, isEditing, article, refreshArticles }) => {
   const dispatch = useDispatch();
   const { handleEdit } = useArticleEdit();
+  const [createArticle] = useCreateArticleMutation();
 
   const handleModalClose = () => {
     dispatch(closeModal());
@@ -30,9 +31,18 @@ export const ArticleModal = ({ open, isEditing, article, refreshArticles }) => {
     if (isEditing) {
       success = await handleEdit(article.id, articleData);
     } else {
-      success = await handleCreate(articleData);
+      try {
+        await createArticle(articleData).unwrap();
+        success = true;
+      } catch (error) {
+        console.error('Error creating article:', error);
+        success = false;
+      }
     }
-    if (success && refreshArticles) refreshArticles();
+    if (success) {
+      if (refreshArticles) refreshArticles();
+      handleModalClose();
+    }
     return success;
   };
 
